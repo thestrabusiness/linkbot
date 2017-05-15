@@ -1,24 +1,15 @@
-# README
+# Linkbot
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This repo contains the Linkbot and it's associated web portal. Linkbot is a slackbot that watches your channels for
+for links that you post or send to your team members, collects and organizes them for you.
 
-Things you may want to cover:
+**To run Linkbot:**
 
-* Ruby version
+* Clone the repo & bundle install
+* Add slackbot integration to your team
+* Invite the bot to a channel
+* Start the server:
+    
+    `SLACK_API_TOKEN='<SLACK TOKEN HERE>' rails s`
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* @linkbot say hi
