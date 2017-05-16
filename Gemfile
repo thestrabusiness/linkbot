@@ -5,10 +5,12 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'awesome_print'
 gem 'celluloid-io'
-gem 'dotenv'
+gem 'dotenv-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
+gem 'otr-activerecord'
 gem 'pg'
 gem 'puma', '~> 3.0'
 gem 'rails', '~> 5.0.2'

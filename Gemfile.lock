@@ -39,6 +39,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.4)
+    awesome_print (1.7.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -74,7 +75,10 @@ GEM
     declarative-option (0.1.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
-    dotenv (2.2.1)
+    dotenv (2.1.2)
+    dotenv-rails (2.1.2)
+      dotenv (= 2.1.2)
+      railties (>= 3.2, < 5.1)
     equalizer (0.0.11)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -104,6 +108,8 @@ GEM
     grape-swagger (0.27.2)
       grape (>= 0.16.2)
     hashie (3.5.5)
+    hashie-forbidden_attributes (0.1.1)
+      hashie (>= 3.0)
     hitimes (1.2.4)
     i18n (0.8.1)
     ice_nine (0.11.2)
@@ -142,6 +148,9 @@ GEM
     nio4r (2.0.0)
     nokogiri (1.7.2)
       mini_portile2 (~> 2.1.0)
+    otr-activerecord (1.2.1)
+      activerecord (>= 4.0, < 5.1)
+      hashie-forbidden_attributes (~> 0.1)
     pg (0.20.0)
     puma (3.8.2)
     rack (2.0.2)
@@ -263,12 +272,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   byebug
   celluloid-io
-  dotenv
+  dotenv-rails
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
+  otr-activerecord
   pg
   puma (~> 3.0)
   rails (~> 5.0.2)
