@@ -5,4 +5,6 @@ Rails.application.routes.draw do
     post 'events/' => 'events#receive', as: :receive
     post 'registration/' => 'team_registration#register', as: :register
   end
+
+  resources :links
 end
