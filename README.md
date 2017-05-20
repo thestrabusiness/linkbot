@@ -10,11 +10,12 @@ links that you post or send to your team members, collects and organizes them fo
 * Configure .ENV file:
   
      `SLACK_CLIENT_ID= <YOUR CLIENT ID>`\
-     `SLACK_CLIENT_SECRET= <YOU CLIENT SECRET>`
+     `SLACK_CLIENT_SECRET= <YOU CLIENT SECRET>`\
+     `PORT=9292`
      
 * Start the server:
  
-    `rails s -p 9292`
+    `rails s`
     
 * Invite the bot to a channel
 * @linkbot say hi
