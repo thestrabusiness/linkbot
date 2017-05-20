@@ -1,10 +1,10 @@
 Bundler.require :default
 
 require_relative 'config/environment'
-require_relative 'bot/bot'
+require_relative 'linkbot/bot'
+require_relative 'linkbot/linkbot_server'
 
 SlackRubyBotServer::App.instance.prepare!
 SlackRubyBotServer::Service.start!
 
-run SlackRubyBotServer::Api::Middleware.instance
-
+run Rails.application
