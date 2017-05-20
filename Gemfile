@@ -6,6 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'awesome_print'
+gem 'bootstrap-sass'
 gem 'celluloid-io'
 gem 'dotenv-rails'
 gem 'jbuilder', '~> 2.5'
@@ -21,9 +22,11 @@ gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
-  gem 'byebug', platform: :mri
   gem 'pry'
+  gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'rspec-rails'
+  gem 'capybara-webkit'
 end
 
 group :development do
