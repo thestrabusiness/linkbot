@@ -6,15 +6,15 @@ links that you post or send to your team members, collects and organizes them fo
 **To run Linkbot:**
 
 * Clone the repo && `bundle install` && `rake db:create db:migrate`
-* Configure a new bot application on Slack API with 
+* Configure a new bot application on Slack API with
 * Configure .ENV file:
-  
+
      `SLACK_CLIENT_ID= <YOUR CLIENT ID>`\
      `SLACK_CLIENT_SECRET= <YOU CLIENT SECRET>`\
      `PORT=9292`
-     
+
 * Start the server:
- 
+
     `rails s`
     
 * Invite the bot to a channel
