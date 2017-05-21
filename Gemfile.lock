@@ -107,9 +107,6 @@ GEM
     equalizer (0.0.11)
     erubis (2.7.0)
     execjs (2.7.0)
-    fabrication (2.16.1)
-    faker (1.7.3)
-      i18n (~> 0.5)
     faraday (0.12.1)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.11.0.1)
@@ -333,8 +330,6 @@ DEPENDENCIES
   capybara-webkit
   celluloid-io
   dotenv-rails
-  fabrication
-  faker
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
