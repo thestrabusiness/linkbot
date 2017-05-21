@@ -5,13 +5,14 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+ruby '2.4.1'
+
 gem 'awesome_print'
 gem 'bootstrap-sass'
 gem 'celluloid-io'
 gem 'dotenv-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
-gem 'ngrok-tunnel'
 gem 'otr-activerecord'
 gem 'pg'
 gem 'puma', '~> 3.0'

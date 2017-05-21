@@ -1,11 +1,14 @@
 class LinkbotServer < SlackRubyBotServer::Server
-  LINK_REGEX = /((http|https):\/\/[a-z0-9]+([\-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?)/
-
   on :message do |client, data|
-    link = data.text.scan(LINK_REGEX)
-    if link.present?
-      Link.create(url: link.first.first)
-      client.say(channel: data.channel, text: "link saved to db")
+    puts data if Rails.env == 'development'
+
+    urls = MessageParser.parse_urls(data.text)
+    # for now we don't have a way to save multiple users to a link, so let's just take the first
+    users = MessageParser.parse_users(data.text).first
+
+    if urls.present?
+      urls.each { |url| Link.create(url: url, user_from: data.user , user_to: users) }
+      client.say(channel: data.channel, text: "link".pluralize(urls.count) + " saved to db")
     end
   end
 end

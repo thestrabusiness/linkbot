@@ -170,7 +170,6 @@ GEM
     mustermann (1.0.0)
     mustermann-grape (1.0.0)
       mustermann (~> 1.0.0)
-    ngrok-tunnel (2.1.0)
     nio4r (2.0.0)
     nokogiri (1.7.2)
       mini_portile2 (~> 2.1.0)
@@ -333,7 +332,6 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
-  ngrok-tunnel
   otr-activerecord
   pg
   pry
@@ -349,5 +347,8 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   web-console (>= 3.3.0)
 
+RUBY VERSION
+   ruby 2.4.1p111
+
 BUNDLED WITH
-   1.14.1
+   1.15.0
