@@ -20,7 +20,7 @@ $(document).ready(function() {
                 code: code
             },
             success: function () {
-                SlackRubyBotServer.message('Team successfully registered!<br><br>DM <b>@bot</b> or create a <b>#channel</b> and invite <b>@bot</b> to it.');
+                SlackRubyBotServer.message('Team successfully registered!<br><br>DM <b>@linkbot</b> or create a <b>#channel</b> and invite <b>@linkbot</b> to it.');
                 $('#links').show();
             },
             error: function () {
