@@ -1,4 +1,4 @@
-Bundler.require :defaultx
+Bundler.require :default
 
 require_relative 'config/environment'
 
