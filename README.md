@@ -13,9 +13,11 @@ links that you post or send to your team members, collects and organizes them fo
      `SLACK_CLIENT_SECRET= <YOU CLIENT SECRET>`\
      `PORT=9292`
 
-* Start the server:
+* Start the servers:
 
-    `rails s`
+    `foreman start`
     
+* Register your team on the root page of the app
 * Invite the bot to a channel
-* @linkbot say hi
+
+With the bot in a channel, you can post links. Visit `/links` to see the list of links you've posted!
