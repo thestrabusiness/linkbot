@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
-  namespace :api do
-    post 'registration/' => 'registration#register', as: :register
-  end
 
+  get 'registration/' => 'registration#register', as: :register
+  get 'registration_success' => 'registration#sucess', as: :success
   resources :links
   resources :dashboard, only: :index
 
