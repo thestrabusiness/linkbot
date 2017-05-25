@@ -1,3 +1,3 @@
-class Link < ActiveRecord::Base
+class User < ActiveRecord::Base
   friendly_id :slug, use: :slugged
 end

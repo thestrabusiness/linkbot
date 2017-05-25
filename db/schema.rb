@@ -10,22 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170520154143) do
+ActiveRecord::Schema.define(version: 20170525223320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
-  create_table "links", force: :cascade do |t|
+  create_table "links", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "url"
-    t.string   "internal_url"
-    t.string   "user_from"
-    t.string   "user_to"
+    t.string   "slug"
     t.datetime "reminder"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.uuid     "user_from_id"
+    t.uuid     "user_to_id"
+    t.index ["user_from_id"], name: "index_links_on_user_from_id", using: :btree
+    t.index ["user_to_id"], name: "index_links_on_user_to_id", using: :btree
   end
 
-  create_table "teams", force: :cascade do |t|
+  create_table "teams", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "team_id"
     t.string   "name"
     t.boolean  "active",     default: true
@@ -33,6 +36,18 @@ ActiveRecord::Schema.define(version: 20170520154143) do
     t.string   "token"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+  end
+
+  create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "slack_id"
+    t.string   "slug"
+    t.uuid     "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_users_on_team_id", using: :btree
   end
 
 end
