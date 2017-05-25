@@ -1,23 +1,25 @@
 class TeamRegistrar
-  def initialize
+  def initialize(current_user, code)
     @slack_client = Slack::Web::Client.new
+    @current_user = current_user
+    @code = code
   end
 
-  def perform(code)
-    authorize_client(code)
+  def perform
+    authorize_client
     validate_or_create_team
     start_server_instance
   end
 
-  def self.perform(code)
-    new.perform(code)
+  def self.perform(code, current_user)
+    new(current_user, code).perform
   end
 
-  def authorize_client(code)
+  def authorize_client
     @client_data = @slack_client.oauth_access(
         client_id: ENV['SLACK_CLIENT_ID'],
         client_secret: ENV['SLACK_CLIENT_SECRET'],
-        code: code
+        code: @code
     )
   end
 
@@ -36,6 +38,12 @@ class TeamRegistrar
           team_id: @client_data['team_id'],
           name: @client_data['team_name']
       )
+    end
+  end
+
+  def update_current_user_team_if_blank
+    if @current_user.present? && @current_user.team.nil?
+      @current_user.update(team: @team)
     end
   end
 

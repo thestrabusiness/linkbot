@@ -1,18 +1,22 @@
 class RegistrationController < ApplicationController
   def register
-    TeamRegistrar.perform(params[:code])
+    TeamRegistrar.perform(params[:code], current_user)
     flash[:notice] = 'Team registered successfully!'
-    render :success
+    redirect_to new_session_path,
+                notice: "Team Registered! Welcome to LinkBot!<br>Please sign in with your Slack account to see your links".html_safe
+
 
   rescue Slack::Web::Api::Error => error
-    if error.message.include?('already registered')
-      redirect_to links_path, notice: "You've already registered that team! Here are your links!"
-    else
-    redirect_to dashboard_index_path, notice: error.message.humanize
-    end
-  end
+    if error.message.include?('already registered') && current_user
+      redirect_to links_path,
+                  notice: "You've already registered that team! Here are your links!"
 
-  def success
-    redirect_to links_path, notice: "Team Registered! Welcome to LinkBot"
+    elsif error.message.include?('already registered') && !current_user
+      redirect_to new_session_path,
+                  notice: "You've already registered that team! Sign in to see your links!"
+
+    else
+      redirect_to dashboard_index_path, notice: error.message.humanize
+    end
   end
 end
