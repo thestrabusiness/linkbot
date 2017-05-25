@@ -1,6 +1,10 @@
 class LinkbotServer < SlackRubyBotServer::Server
   on :message do |client, data|
-    puts data if Rails.env == 'development'
+   if Rails.env == 'development'
+     puts '-'*70
+     puts data
+     puts '-'*70
+   end
 
     urls = MessageParser.parse_urls(data.text)
     # for now we don't have a way to save multiple users to a link, so let's just take the first
