@@ -24,7 +24,7 @@ class TeamRegistrar
   def validate_or_create_team
     token = @client_data['bot']['bot_access_token']
     @team = Team.where(token: token).first
-    @team ||= Team.where(team_id: rc['team_id']).first
+    @team ||= Team.where(team_id: @client_data['team_id']).first
 
     if @team && !@team.active?
       @team.activate!(token)
@@ -33,8 +33,8 @@ class TeamRegistrar
     else
       @team = Team.create!(
           token: token,
-          team_id: rc['team_id'],
-          name: rc['team_name']
+          team_id: @client_data['team_id'],
+          name: @client_data['team_name']
       )
     end
   end

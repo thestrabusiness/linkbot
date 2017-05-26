@@ -13,5 +13,6 @@ class RegistrationController < ApplicationController
   end
 
   def success
+    redirect_to links_path, notice: "Team Registered! Welcome to LinkBot"
   end
 end
