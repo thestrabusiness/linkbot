@@ -23,5 +23,8 @@ class LinksController < ApplicationController
   def load_and_authorize_link
     @link = Link.find(params[:id])
     authorize @link
+
+  rescue Pundit::NotAuthorizedError
+    redirect_to links_path
   end
 end
