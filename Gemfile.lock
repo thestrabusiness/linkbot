@@ -190,6 +190,8 @@ GEM
       slop (~> 3.4)
     public_suffix (2.0.5)
     puma (3.8.2)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     rack (2.0.3)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -347,6 +349,7 @@ DEPENDENCIES
   pg
   pry
   puma (~> 3.0)
+  pundit
   rails (~> 5.0.2)
   rspec-rails
   sass-rails (~> 5.0)

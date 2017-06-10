@@ -1,3 +1,6 @@
 <% @links.each do |link| %>
-    <div class=link><%= link.url %></div>
+    <div class=link-container>
+      <%= link_to link.url, link.url, class: 'link' %>
+      <%= link_to '(Delete)', link_path(link), method: :delete %>
+    </div>
 <% end %>
