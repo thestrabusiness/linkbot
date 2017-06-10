@@ -1,7 +1,4 @@
 class User < ActiveRecord::Base
-  extend FriendlyId
-  friendly_id :slug, use: :slugged
-
   belongs_to :team
 
   validates :email, presence: true, uniqueness: true

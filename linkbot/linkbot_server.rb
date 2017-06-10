@@ -11,7 +11,7 @@ class LinkbotServer < SlackRubyBotServer::Server
     users = MessageParser.parse_users(data.text).first
 
     if urls.present?
-      urls.each { |url| Link.create(url: url, user_from: data.user , user_to: users) }
+      urls.each { |url| Link.create(url: url, user_from: User.find_by_slack_id(data.user) , user_to: User.find_by_slack_id(users)) }
       client.say(channel: data.channel, text: "link".pluralize(urls.count) + " saved to db")
     end
   end
