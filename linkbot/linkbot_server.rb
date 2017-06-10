@@ -19,11 +19,13 @@ class LinkbotServer < SlackRubyBotServer::Server
             url: url,
             user_from: User.find_by_slack_id(data.user)
         )
+
+        link.tagged_users << User.where(slack_id: users)
       end
 
       client.say(
           channel: data.channel,
-          text: "link".pluralize(urls.count) + " saved to db"
+          text: "Link".pluralize(urls.count) + " saved to db"
       )
     end
   end

@@ -5,7 +5,8 @@ class MessageParser
   def self.parse_urls(text)
     text.scan(CARET_REGEX).
         map { |result| result[0] }.
-        reject { |string| USER_REGEX.match?(string)}
+        reject { |string| USER_REGEX.match?(string)}.
+        map { |string| string.split('|').first}
   end
 
   def self.parse_users(text)
