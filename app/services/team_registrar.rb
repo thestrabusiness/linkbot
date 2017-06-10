@@ -9,6 +9,7 @@ class TeamRegistrar
     authorize_client
     validate_or_create_team
     start_server_instance
+    register_team_members
   end
 
   def self.perform(code, current_user)
@@ -41,13 +42,11 @@ class TeamRegistrar
     end
   end
 
-  def update_current_user_team_if_blank
-    if @current_user.present? && @current_user.team.nil?
-      @current_user.update(team: @team)
-    end
-  end
-
   def start_server_instance
     SlackRubyBotServer::Service.instance.create!(@team)
+  end
+
+  def register_team_members
+    TeamMemberRegistrar.perform(@team.id)
   end
 end

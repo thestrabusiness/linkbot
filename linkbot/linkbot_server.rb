@@ -1,4 +1,10 @@
 class LinkbotServer < SlackRubyBotServer::Server
+  on :team_join do |client, data|
+    puts client
+    puts data
+    #UserCreator.perform(something)
+  end
+
   on :message do |client, data|
    if Rails.env == 'development'
      puts '-'*70
@@ -7,12 +13,20 @@ class LinkbotServer < SlackRubyBotServer::Server
    end
 
     urls = MessageParser.parse_urls(data.text)
-    # for now we don't have a way to save multiple users to a link, so let's just take the first
-    users = MessageParser.parse_users(data.text).first
+    users = MessageParser.parse_users(data.text)
 
     if urls.present?
-      urls.each { |url| Link.create(url: url, user_from: User.find_by_slack_id(data.user) , user_to: User.find_by_slack_id(users)) }
-      client.say(channel: data.channel, text: "link".pluralize(urls.count) + " saved to db")
+      urls.each do |url|
+        link = Link.create(
+            url: url,
+            user_from: User.find_by_slack_id(data.user)
+        )
+      end
+
+      client.say(
+          channel: data.channel,
+          text: "link".pluralize(urls.count) + " saved to db"
+      )
     end
   end
 end

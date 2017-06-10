@@ -11,11 +11,11 @@ class SessionsController < ApplicationController
 
     @user_response = slack_client.users_info(user: @auth_response['user']['id'])
 
-    user = User.find_by_email(@auth_response['user']['email'])
+    load_and_verify_user
 
     if user_team.nil?
       redirect_to dashboard_index_path, notice: 'You must add LinkBoy to your team before signing in!'
-    elsif sign_in( user || create_user )
+    elsif sign_in( @user || create_user )
       redirect_to links_path, notice: "Hi, #{current_user.full_name}"
     else
       redirect_to dashboard_index_path, notice: 'Whoops! There was a problem signing you in!'
@@ -31,6 +31,14 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  def load_and_verify_user
+    @user = User.find_by_slack_id(@auth_response['user']['id'])
+
+    if @user.present? && @user.email.blank?
+      @user.update(email: user_attributes['email'])
+    end
+  end
 
   def create_user
     User.create(user_params)
