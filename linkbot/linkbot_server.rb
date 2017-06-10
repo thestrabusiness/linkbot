@@ -1,8 +1,6 @@
 class LinkbotServer < SlackRubyBotServer::Server
-  on :team_join do |client, data|
-    puts client
-    puts data
-    #UserCreator.perform(something)
+  on :team_join do |_, data|
+    User.find_by_slack_id(data.user) || UserCreator.perform(data.user, data.team)
   end
 
   on :message do |client, data|
