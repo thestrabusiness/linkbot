@@ -1,6 +1,6 @@
 class LinksController < ApplicationController
   before_action :authenticate_user
-  before_filter :load_and_authorize_link, only: [:show, :destroy]
+  before_action :load_and_authorize_link, only: [:show, :destroy]
 
   def index
     @links = policy_scope(Link)

@@ -108,6 +108,11 @@ GEM
     equalizer (0.0.11)
     erubis (2.7.0)
     execjs (2.7.0)
+    factory_girl (4.8.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.8.0)
+      factory_girl (~> 4.8.0)
+      railties (>= 3.0.0)
     faraday (0.11.0)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.11.0.1)
@@ -340,6 +345,7 @@ DEPENDENCIES
   capybara-webkit
   celluloid-io
   dotenv-rails
+  factory_girl_rails
   friendly_id
   jbuilder (~> 2.5)
   jquery-rails
@@ -365,4 +371,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.15.0
+   1.15.1
