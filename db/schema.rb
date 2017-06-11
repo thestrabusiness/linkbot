@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170610160238) do
+ActiveRecord::Schema.define(version: 20170610222139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,23 @@ ActiveRecord::Schema.define(version: 20170610160238) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.uuid     "user_from_id"
+    t.uuid     "metadata_id"
+    t.index ["metadata_id"], name: "index_links_on_metadata_id", using: :btree
     t.index ["user_from_id"], name: "index_links_on_user_from_id", using: :btree
+  end
+
+  create_table "metadata", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "url"
+    t.string   "title"
+    t.string   "description"
+    t.string   "domain"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["url"], name: "index_metadata_on_url", using: :btree
   end
 
   create_table "teams", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -36,9 +52,11 @@ ActiveRecord::Schema.define(version: 20170610160238) do
     t.datetime "updated_at",                null: false
   end
 
-  create_table "user_tags", force: :cascade do |t|
-    t.uuid "user_id"
-    t.uuid "link_id"
+  create_table "user_tags", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "user_id"
+    t.uuid     "link_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["link_id"], name: "index_user_tags_on_link_id", using: :btree
     t.index ["user_id", "link_id"], name: "index_user_tags_on_user_id_and_link_id", using: :btree
     t.index ["user_id"], name: "index_user_tags_on_user_id", using: :btree
