@@ -4,12 +4,6 @@ class LinkbotServer < SlackRubyBotServer::Server
   end
 
   on :message do |client, data|
-   if Rails.env == 'development'
-     puts '-'*70
-     puts data
-     puts '-'*70
-   end
-
     urls = MessageParser.parse_urls(data.text)
     users = MessageParser.parse_users(data.text)
 

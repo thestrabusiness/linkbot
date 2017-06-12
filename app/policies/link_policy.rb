@@ -15,7 +15,10 @@ class LinkPolicy
     end
 
     def resolve
-      scope.joins(user_from: :team).where('users.team_id': user.team.id)
+      scope
+          .joins(user_from: :team)
+          .where('users.team_id': user.team.id)
+          .includes(:metadata)
     end
   end
 

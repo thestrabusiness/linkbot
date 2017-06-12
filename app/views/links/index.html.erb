@@ -1,6 +1,25 @@
-<% @links.each do |link| %>
-    <div class=link-container>
-      <%= link_to link.url, link_path(link), class: 'link' %>
-      <%= link_to '(Delete)', link_path(link), method: :delete %>
+<div class='title-bar'>
+  <div class='title'>LinkBoy</div>
+  <div class='sign-out-button'><%= link_to 'Sign Out', session_path, method: :delete %></div>
+</div>
+
+<div class='links-container'>
+  <% @links.each do |link| %>
+      <div class='link-box-container'>
+        <%= link_to link_path(link) do %>
+          <div class=link-box>
+            <div class='link-image-container'>
+              <%= image_tag(link.image.expiring_url, class: 'link-image') %>
+            </div>
+            <div class='link-title'>
+              <%= link.title %>
+            </div>
+            <div class='link-domain'>
+              <%= link.domain %>
+            </div>
+              <%= link_to '(Delete)', link_path(link), method: :delete %>
+          </div>
+        <% end %>
     </div>
 <% end %>
+</div>

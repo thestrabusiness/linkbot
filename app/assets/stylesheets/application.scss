@@ -1,0 +1,18 @@
+@import 'links';
+
+.alert {
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+}
+
+.alert-error {
+  background-color: #ff979b;
+  color: #942626;
+}
+
+.alert-notice {
+  background-color: #9bff7e;
+  color: #006530;
+}
