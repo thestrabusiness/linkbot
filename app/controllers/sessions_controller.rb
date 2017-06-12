@@ -14,19 +14,19 @@ class SessionsController < ApplicationController
     load_and_verify_user
 
     if user_team.nil?
-      redirect_to homepage_index_path, notice: 'You must add LinkBoy to your team before signing in!'
+      redirect_to root_path, notice: 'You must add LinkBoy to your team before signing in!'
     elsif sign_in( @user || create_user )
       redirect_to links_path, notice: "Hi, #{current_user.first_name}!"
     else
-      redirect_to homepage_index_path, notice: 'Whoops! There was a problem signing you in!'
+      redirect_to root_path, notice: 'Whoops! There was a problem signing you in!'
     end
   end
 
   def destroy
     if sign_out
-      redirect_to homepage_index_path, notice: 'Successfully signed out!'
+      redirect_to root_path, notice: 'Successfully signed out!'
     else
-      redirect_to homepage_index_path, notice: 'Whoops!'
+      redirect_to root_path, notice: 'Whoops!'
     end
   end
 
