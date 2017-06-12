@@ -3,7 +3,7 @@ class RegistrationController < ApplicationController
     TeamRegistrar.perform(params[:code], current_user)
     flash[:notice] = 'Team registered successfully!'
     redirect_to new_session_path,
-                notice: "Team Registered! Welcome to LinkBot!<br>Please sign in with your Slack account to see your links".html_safe
+                notice: 'Team Registered! Welcome to LinkBot!<br />Please sign in with your Slack account to see your links'.html_safe
 
 
   rescue Slack::Web::Api::Error => error
@@ -16,7 +16,7 @@ class RegistrationController < ApplicationController
                   notice: "You've already registered that team! Sign in to see your links!"
 
     else
-      redirect_to dashboard_index_path, notice: error.message.humanize
+      redirect_to homepage_index_path, notice: error.message.humanize
     end
   end
 end
