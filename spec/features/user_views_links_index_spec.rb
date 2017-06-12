@@ -6,19 +6,15 @@ feature 'User visits the link index page' do
 
   context 'with an authenticated session' do
     it 'renders only links posted by a the user\'s team'do
-      authorized_links = create_list(:link, 3, user_from: user)
-      unauthorized_links = create_list(:link, 3, user_from: other_user)
+      authorized_link = create(:link, user_from: user, url: 'www.google.com')
+      unauthorized_link = create(:link, user_from: other_user, url: 'www.facebook.com')
 
       sign_in(user)
       visit links_path
 
-      authorized_links.each do |link|
-        expect(page).to have_content link.url
-      end
+      expect(page).to have_content authorized_link.url
 
-      unauthorized_links.each do |link|
-        expect(page).to_not have_content link.url
-      end
+      expect(page).to_not have_content unauthorized_link.url
     end
   end
 

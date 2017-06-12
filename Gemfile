@@ -41,9 +41,10 @@ group :development, :test do
 end
 
 group :test do
-  gem 'rspec-rails'
   gem 'capybara-webkit'
+  gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'rspec-rails'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

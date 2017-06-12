@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :link do
-    sequence(:url) {|n| "www.link#{n}.com"}
+    url 'www.google.com'
     slug SecureRandom.hex(3)
   end
 end

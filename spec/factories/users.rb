@@ -3,7 +3,7 @@ FactoryGirl.define do
     sequence(:first_name) { |n| "Korben_#{n}"}
     last_name "Dallas"
     sequence(:email) { |n| "kdallas_#{n}@multipass.net"}
-    slack_id "U#{SecureRandom.hex(4).upcase}"
+    sequence(:slack_id) { |n| "U#{SecureRandom.hex(4).upcase}#{n}" }
     team
   end
 end

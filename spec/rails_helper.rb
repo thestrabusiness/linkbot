@@ -9,7 +9,7 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'support/factory_girl'
 
-ActiveRecord::Base.logger.level = 1
+ActiveRecord::Base.logger.level = 2
 ActiveRecord::Migration.maintain_test_schema!
 
 Capybara.javascript_driver = :webkit
