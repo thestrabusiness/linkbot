@@ -44,4 +44,14 @@ describe 'MessageParser' do
       end
     end
   end
+
+  describe '#parse_tags' do
+    context 'when the message text contains a hashtag' do
+      it 'returns an array of the tags without #' do
+        message = 'Here’s two links <http://www.testlink.com> <http://compile.this> #cool-links'
+
+        expect(MessageParser.parse_tags(message)).to eq ['cool-links']
+      end
+    end
+  end
 end
