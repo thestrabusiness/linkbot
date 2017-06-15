@@ -4,6 +4,9 @@ class LinkbotServer < SlackRubyBotServer::Server
   end
 
   on :message do |client, data|
+
+    channel_name = client.channels_info(channel: data.channel)
+
     MessageParser.links_present?(data.text) ? parsed_message = MessageParser.perform(data.text) : parsed_message = {}
 
     if parsed_message[:urls].present?
@@ -17,7 +20,7 @@ class LinkbotServer < SlackRubyBotServer::Server
 
         link.tagged_users << User.where(slack_id: parsed_message[:users]) if parsed_message[:users].present?
 
-        Tag.create(name: data.channel.name, link: link, user: user_from, team: user_from.team)
+        Tag.create(name: channel_name, link: link, user: user_from, team: user_from.team)
 
         if tags.present?
           tags.each do |tag|
