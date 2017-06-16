@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614013543) do
+ActiveRecord::Schema.define(version: 20170616225913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(version: 20170614013543) do
     t.uuid     "metadata_id"
     t.index ["metadata_id"], name: "index_links_on_metadata_id", using: :btree
     t.index ["user_from_id"], name: "index_links_on_user_from_id", using: :btree
+  end
+
+  create_table "links_tags", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "link_id"
+    t.uuid "tag_id"
+    t.index ["link_id"], name: "index_links_tags_on_link_id", using: :btree
+    t.index ["tag_id"], name: "index_links_tags_on_tag_id", using: :btree
   end
 
   create_table "metadata", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -44,12 +51,10 @@ ActiveRecord::Schema.define(version: 20170614013543) do
 
   create_table "tags", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "name"
-    t.uuid     "link_id"
     t.uuid     "user_id"
     t.uuid     "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["link_id"], name: "index_tags_on_link_id", using: :btree
     t.index ["team_id"], name: "index_tags_on_team_id", using: :btree
     t.index ["user_id"], name: "index_tags_on_user_id", using: :btree
   end

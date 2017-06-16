@@ -1,4 +1,6 @@
 class LinkbotServer < SlackRubyBotServer::Server
+  include Pundit
+
   on :team_join do |_, data|
     User.find_by_slack_id(data.user) || UserCreator.perform(data.user, data.team)
   end
@@ -20,14 +22,13 @@ class LinkbotServer < SlackRubyBotServer::Server
 
         link.tagged_users << User.where(slack_id: parsed_message[:users]) if parsed_message[:users].present?
 
-        Tag.create(name: channel_name, link: link, user: user_from, team: user_from.team)
+        link.tags << Pundit.policy_scope(user_from, Tag).find_by_name(channel_name) || Tag.create(name: channel_name, user: user_from, team: user_from.team)
 
         if parsed_message[:tags].present?
           parsed_message[:tags].each do |tag|
-            Tag.create(name: tag, link: link, user: user_from, team: user_from.team)
+            link.tags << Pundit.policy_scope(user_from, Tag).find_by_name(tag) || Tag.create(name: tag, user: user_from, team: user_from.team)
           end
         end
-
       end
 
       client.say(

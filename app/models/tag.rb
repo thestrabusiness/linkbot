@@ -1,7 +1,7 @@
 class Tag < ActiveRecord::Base
   belongs_to :user
   belongs_to :team
-  belongs_to :link
+  has_and_belongs_to_many :links
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: :team
 end
