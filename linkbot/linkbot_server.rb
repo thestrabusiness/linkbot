@@ -5,7 +5,7 @@ class LinkbotServer < SlackRubyBotServer::Server
 
   on :message do |client, data|
 
-    channel_name = client.channels_info(channel: data.channel)
+    channel_name = get_channel_name(client.web_client, data.channel)
 
     MessageParser.links_present?(data.text) ? parsed_message = MessageParser.perform(data.text) : parsed_message = {}
 
@@ -22,8 +22,8 @@ class LinkbotServer < SlackRubyBotServer::Server
 
         Tag.create(name: channel_name, link: link, user: user_from, team: user_from.team)
 
-        if tags.present?
-          tags.each do |tag|
+        if parsed_message[:tags].present?
+          parsed_message[:tags].each do |tag|
             Tag.create(name: tag, link: link, user: user_from, team: user_from.team)
           end
         end
@@ -32,8 +32,16 @@ class LinkbotServer < SlackRubyBotServer::Server
 
       client.say(
           channel: data.channel,
-          text: "Link".pluralize(urls.count) + " saved to db"
+          text: "Link".pluralize(parsed_message[:urls].count) + " saved to db"
       )
     end
+  end
+
+  def self.get_channel_name(client, channel)
+    #public channel?
+    return client.channels_info(channel: channel).channel['name'] if channel.start_with? 'C'
+
+    #private group?
+    return client.groups_info(channel: channel).channel['name'] if channel.start_with? 'G'
   end
 end
