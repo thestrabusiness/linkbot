@@ -10,15 +10,5 @@ class Link < ActiveRecord::Base
   delegate :domain, to: :metadata, allow_nil: true
   delegate :description, to: :metadata, allow_nil: true
 
-  after_create :find_or_create_link_metadata
-
-  def find_or_create_link_metadata
-    metadata = Metadata.find_by_url(self.url)
-
-    if metadata.present?
-      self.update(metadata: metadata)
-    else
-      MetadataCreator.perform(self)
-    end
-  end
+  validates :url, :user_from, presence: true
 end
