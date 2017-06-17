@@ -9,8 +9,8 @@ class SessionsController < ApplicationController
         redirect_uri: sessions_create_url
     )
 
+    slack_client.token = @auth_response['access_token']
     @user_response = slack_client.users_info(user: @auth_response['user']['id'])
-
     load_and_verify_user
 
     if user_team.nil?
@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
   private
 
   def load_and_verify_user
-    @user = User.find_by_slack_id(@auth_response['user']['id'])
+    @user = User.slack_find(user_attributes['id'], user_attributes['team_id'] )
 
     if @user.present? && @user.email.blank?
       @user.update(email: user_attributes['email'])

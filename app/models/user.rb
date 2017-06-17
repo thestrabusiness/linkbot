@@ -5,6 +5,10 @@ class User < ActiveRecord::Base
 
   validates :slack_id, presence: true, uniqueness: true
 
+  def self.slack_find(slack_user_id, slack_team_id)
+    joins(:team).where('users.slack_id': slack_user_id, 'teams.team_id': slack_team_id).take
+  end
+
   def full_name
     [first_name, last_name].join(' ')
   end

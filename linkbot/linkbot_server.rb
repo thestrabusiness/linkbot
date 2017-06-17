@@ -2,12 +2,12 @@ class LinkbotServer < SlackRubyBotServer::Server
   include Pundit
 
   on :team_join do |_, data|
-    User.find_by_slack_id(data.user) || UserCreator.perform(data.user, data.team)
+    User.slack_find(data.user, data.team) || UserCreator.perform(data.user, data.team)
   end
 
   on :message do |client, data|
     channel_name = get_channel_name(client.web_client, data.channel)
-    user_from = User.find_by_slack_id(data.user)
+    user_from = User.slack_find(data.user, data.team)
 
     if MessageParser.links_present?(data.text)
       parsed_message = MessageParser.perform(data.text)
