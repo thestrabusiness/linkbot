@@ -220,6 +220,7 @@ GEM
     mustermann-grape (1.0.0)
       mustermann (~> 1.0.0)
     nesty (1.0.2)
+    newrelic_rpm (4.2.0.334)
     nio4r (2.0.0)
     nokogiri (1.7.2)
       mini_portile2 (~> 2.1.0)
@@ -401,6 +402,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   metainspector
   monban
+  newrelic_rpm
   otr-activerecord
   paperclip
   pg

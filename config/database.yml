@@ -17,3 +17,7 @@ test:
 production:
   <<: *default
   database: link_bot
+
+staging:
+  <<: *default
+  database: link_bot_staging
