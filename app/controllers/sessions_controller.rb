@@ -25,8 +25,6 @@ class SessionsController < ApplicationController
   def update
     team = Team.find(params[:team_id])
 
-    binding.pry
-
     if current_user.update(active_team: team)
       redirect_to links_path
     else
