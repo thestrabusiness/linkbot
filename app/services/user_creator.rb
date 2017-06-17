@@ -4,7 +4,7 @@ class UserCreator
   def initialize(slack_user_id, slack_team_id)
     @slack_team_id = slack_team_id
     @slack_user_id = slack_user_id
-    @slack_client = Slack::Web::Client.new
+    @slack_client = Slack::Web::Client.new(token: team.token)
   end
 
   def perform
@@ -19,7 +19,7 @@ class UserCreator
   end
 
   def team
-    Team.find_by_team_id(slack_team_id)
+    @team ||= Team.find_by_team_id(slack_team_id)
   end
 
   def self.perform(slack_user_id, slack_team_id)

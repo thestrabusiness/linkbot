@@ -4,7 +4,7 @@ class TeamMemberRegistrar
   def initialize(team_id)
     @team_id = team_id
     @user_attributes = {}
-    @slack_client = Slack::Web::Client.new
+    @slack_client = Slack::Web::Client.new(token: team.token)
   end
 
   def perform
@@ -39,5 +39,9 @@ class TeamMemberRegistrar
     user_attributes.each do |attributes|
       User.create(attributes.last)
     end
+  end
+
+  def team
+    @team ||= Team.find(team_id)
   end
 end
