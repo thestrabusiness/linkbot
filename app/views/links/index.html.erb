@@ -9,7 +9,7 @@
         <%= link_to link_path(link) do %>
           <div class=link-box>
             <div class='link-image-container'>
-              <%= link_image(link) %>
+              <%= image_tag(link_image_path(link), class: 'link-image') %>
             </div>
             <div class='link-title'>
               <%= link.title %>

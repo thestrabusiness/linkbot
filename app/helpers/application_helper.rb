@@ -1,9 +1,9 @@
 module ApplicationHelper
-  def link_image(link)
+  def link_image_path(link)
     if link.metadata.present? && link.metadata.image.present?
-      image_tag(link.metadata.image.expiring_url, class: 'link-image')
+      link.metadata.image.expiring_url
     else
-      inline_svg('placeholder.svg', class: 'link-image')
+      'placeholder.png'
     end
   end
 
