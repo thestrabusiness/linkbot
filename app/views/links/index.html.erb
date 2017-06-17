@@ -9,13 +9,13 @@
         <%= link_to link_path(link) do %>
           <div class=link-box>
             <div class='link-image-container'>
-              <%= image_tag(link.image.expiring_url, class: 'link-image') %>
+              <%= link_image(link) %>
             </div>
             <div class='link-title'>
               <%= link.title %>
             </div>
             <div class='link-domain'>
-              <%= link.domain %>
+              <%= link_domain(link) %>
             </div>
               <%= link_to '(Delete)', link_path(link), method: :delete %>
           </div>

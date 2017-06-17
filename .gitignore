@@ -19,3 +19,5 @@
 #Ignore secret stuff ;)
 .env
 
+#Ignore ds_store
+.DS_Store
