@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   #Slack API redirects
   get 'sessions/create', to: 'sessions#create'
   get 'registration/' => 'registration#register', as: :register
+  get 'sessions/link', to: 'sessions#link'
 
   root to: 'homepage#index'
 end

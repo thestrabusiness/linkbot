@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170617145713) do
+ActiveRecord::Schema.define(version: 20170617214749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,14 +51,24 @@ ActiveRecord::Schema.define(version: 20170617145713) do
     t.index ["url"], name: "index_metadata_on_url", using: :btree
   end
 
+  create_table "slack_accounts", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid   "user_id"
+    t.uuid   "team_id"
+    t.string "slack_id"
+    t.string "email"
+    t.index ["slack_id"], name: "index_slack_accounts_on_slack_id", using: :btree
+    t.index ["team_id"], name: "index_slack_accounts_on_team_id", using: :btree
+    t.index ["user_id"], name: "index_slack_accounts_on_user_id", using: :btree
+  end
+
   create_table "tags", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "name"
-    t.uuid     "user_id"
     t.uuid     "team_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.uuid     "slack_user_id"
+    t.index ["slack_user_id"], name: "index_tags_on_slack_user_id", using: :btree
     t.index ["team_id"], name: "index_tags_on_team_id", using: :btree
-    t.index ["user_id"], name: "index_tags_on_user_id", using: :btree
   end
 
   create_table "teams", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -91,14 +101,11 @@ ActiveRecord::Schema.define(version: 20170617145713) do
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "email"
-    t.string   "slack_id"
     t.string   "slug"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.uuid     "active_team_id"
     t.index ["active_team_id"], name: "index_users_on_active_team_id", using: :btree
-    t.index ["slack_id"], name: "index_users_on_slack_id", using: :btree
   end
 
 end

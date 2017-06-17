@@ -30,15 +30,25 @@ class TeamMemberRegistrar
           slack_id: user.id,
           active_team_id: team_id,
           first_name: user.profile.first_name,
-          last_name: user.profile.last_name
+          last_name: user.profile.last_name,
+          email: user.profile.email
       }
     end
   end
 
   def create_users
     user_attributes.each do |attributes|
-      new_user = User.create(attributes.last)
-      new_user.teams << team
+      user_attributes = attributes.last.except(:slack_id, :email)
+      user_slack_id = attributes.last[:slack_id]
+      user_email = attributes.last[:email]
+
+      new_user = User.create(user_attributes)
+      SlackAccount.create(
+          slack_id: user_slack_id,
+          email: user_email,
+          user: new_user,
+          team: team
+      )
     end
   end
 

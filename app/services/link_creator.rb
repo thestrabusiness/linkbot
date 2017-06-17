@@ -24,8 +24,6 @@ class LinkCreator
     ActiveRecord::Base.transaction do
       get_metadata
       tag_users if user_tags.present?
-      create_channel_tag
-      add_additional_tags if hash_tags.present?
 
       link.save
 
@@ -34,16 +32,19 @@ class LinkCreator
       end
     end
 
+    create_channel_tag
+    add_additional_tags if hash_tags.present?
+
   rescue ActiveRecord::Rollback
     logger.error "There was a problem creating the link #{link.errors.inspect}"
   end
 
   def tag_users
-    link.tagged_users << User.where(slack_id: user_tags)
+    link.tagged_users << SlackAccount.where(slack_id: user_tags)
   end
 
   def create_channel_tag
-    link.tags << Tag.create(name: channel_name, user: user_from, team: team)
+    link.tags << Tag.create(name: channel_name, slack_user: user_from, team: team)
   end
 
   def add_additional_tags
@@ -55,7 +56,7 @@ class LinkCreator
   end
 
   def find_or_create_tag(name)
-    policy_scope(Tag).find_by_name(name) || Tag.create(name: name, user: user_from, team: team)
+    policy_scope(Tag).find_by_name(name) || Tag.create(name: name, slack_user: user_from, team: team)
   end
 
   def link

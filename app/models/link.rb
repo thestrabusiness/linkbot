@@ -1,8 +1,8 @@
 class Link < ActiveRecord::Base
-  belongs_to :user_from, class_name: 'User'
+  belongs_to :user_from, class_name: 'SlackAccount'
   belongs_to :team
   has_and_belongs_to_many :tags
-  has_and_belongs_to_many :tagged_users, class_name: 'User', join_table: 'user_tags'
+  has_and_belongs_to_many :tagged_users, class_name: 'SlackAccount', join_table: 'user_tags'
   belongs_to :metadata
 
   delegate :title, to: :metadata, allow_nil: true

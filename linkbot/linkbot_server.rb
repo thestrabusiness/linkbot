@@ -1,13 +1,12 @@
 class LinkbotServer < SlackRubyBotServer::Server
-  include Pundit
-
-  on :team_join do |_, data|
-    User.slack_find(data.user, data.team) || UserCreator.perform(data.user, data.team)
+  on :team_join do |client, data|
+    user_email = get_user_email(client.web_client, data.user)
+    SlackAccount.slack_find(data.user, find_team(data.team)) || UserCreator.perform(data.user, data.team, user_email)
   end
 
   on :message do |client, data|
     channel_name = get_channel_name(client.web_client, data.channel)
-    user_from = User.slack_find(data.user, data.team)
+    user_from = SlackAccount.slack_find(data.user, find_team(data.team))
 
     if MessageParser.links_present?(data.text)
       parsed_message = MessageParser.perform(data.text)
@@ -36,5 +35,14 @@ class LinkbotServer < SlackRubyBotServer::Server
 
     #private group?
     return client.groups_info(channel: channel).channel['name'] if channel.start_with? 'G'
+  end
+
+
+  def self.get_user_email(client, slack_user_id)
+    client.users_identity(user: slack_user_id).user.email
+  end
+
+  def self.find_team(team_id)
+    Team.find_by_team_id(team_id)
   end
 end

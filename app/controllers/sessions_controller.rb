@@ -1,16 +1,6 @@
 class SessionsController < ApplicationController
   def create
-    slack_client = Slack::Web::Client.new
-
-    @auth_response = slack_client.oauth_access(
-        client_id: ENV['SLACK_CLIENT_ID'],
-        client_secret: ENV['SLACK_CLIENT_SECRET'],
-        code: params[:code],
-        redirect_uri: sessions_create_url
-    )
-
-    slack_client.token = @auth_response['access_token']
-    @user_response = slack_client.users_info(user: @auth_response['user']['id'])
+    get_user_auth_response(sessions_create_url)
     load_and_verify_user
 
     if user_team.nil?
@@ -19,6 +9,35 @@ class SessionsController < ApplicationController
       redirect_to links_path, notice: "Hi, #{current_user.first_name}!"
     else
       redirect_to root_path, notice: 'Whoops! There was a problem signing you in!'
+    end
+  end
+
+  def link
+    get_user_auth_response(sessions_link_url)
+
+    slack_account = SlackAccount.find_by_email(user_attributes['email'])
+
+    if user_team.nil?
+      redirect_to root_path, notice: 'You must add LinkBoy to your team before signing in with that account!'
+    elsif slack_account.present? && slack_account.user == current_user
+      current_user.update(active_team: slack_account.team)
+      redirect_to links_path, notice: 'You\'ve already linked that account, here are your links.'
+    elsif slack_account.present? && slack_account.user != current_user
+      slack_account.update(user: current_user)
+      current_user.update(active_team: slack_account.team)
+      redirect_to links_path, notice: 'Account linked! Here\'s your team\'s dashboard.'
+    elsif !slack_account.present?
+      slack_account = SlackAccount.create(
+                                user: current_user,
+                                team: user_team,
+                                slack_id: user_attributes['id'],
+                                email: user_attributes['email']
+      )
+
+      current_user.update(active_team: slack_account.team)
+      redirect_to links_path, notice: 'Account linked! Here\'s your team\'s dashboard.'
+    else
+      redirect_to links_path, notice: 'There was a problem signing in with your account.'
     end
   end
 
@@ -43,31 +62,29 @@ class SessionsController < ApplicationController
   private
 
   def load_and_verify_user
-    @user = User.slack_find(user_attributes['id'], user_attributes['team_id'] )
+    @user = SlackAccount.slack_find(user_attributes['id'], user_team.id).user
+  end
 
-    if @user.present? && @user.email.blank?
-      @user.update(email: user_attributes['email'])
-    end
+  def get_user_auth_response(redirect_uri)
+    slack_client = Slack::Web::Client.new
+
+    @auth_response = slack_client.oauth_access(
+        client_id: ENV['SLACK_CLIENT_ID'],
+        client_secret: ENV['SLACK_CLIENT_SECRET'],
+        code: params[:code],
+        redirect_uri: redirect_uri
+    )
+
+    slack_client.token = @auth_response['access_token']
+    @user_response = slack_client.users_info(user: @auth_response['user']['id'])
   end
 
   def create_user
-    user = User.create(user_params)
-    user.teams << user_team
-    user
+    UserCreator.perform(user_attributes['id'], user_attributes['team_id'], user_attributes['email'])
   end
 
   def user_attributes
     @user_response['user'].merge(@auth_response['user'])
-  end
-
-  def user_params
-    {
-        first_name: user_attributes['profile']['first_name'],
-        last_name: user_attributes['profile']['last_name'],
-        email: user_attributes['email'],
-        slack_id: user_attributes['id'],
-        active_team: user_team
-    }
   end
 
   def user_team

@@ -5,8 +5,8 @@ feature 'User deletes a link' do
   let!(:other_team_user) { create(:user) }
 
   before(:each) do
-    @link = create(:link, user_from: user, team: user.active_team)
-    @other_team_link = create(:link, user_from: other_team_user, team: other_team_user.active_team)
+    @link = create(:link, user_from: user.slack_accounts.first, team: user.active_team)
+    @other_team_link = create(:link, user_from: other_team_user.slack_accounts.first, team: other_team_user.active_team)
   end
 
   context 'as an authenticated user' do
