@@ -1,6 +1,4 @@
 class Link < ActiveRecord::Base
-  include InlineSvg
-
   belongs_to :user_from, class_name: 'User'
   has_one :team, through: :user_from
   has_and_belongs_to_many :tags
