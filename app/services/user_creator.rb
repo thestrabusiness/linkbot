@@ -10,12 +10,13 @@ class UserCreator
   def perform
     user = slack_client.users_info(user: slack_user_id)
 
-    User.create(
+    new_user = User.create(
         slack_id: user.id,
-        team_id: team.id,
         first_name: user.profile.first_name,
         last_name: user.profile.last_name
     )
+
+    new_user.teams << team
   end
 
   def team

@@ -1,18 +1,20 @@
 class LinkCreator
   include ErrorCollection
-  attr_accessor :url, :user_from, :user_tags, :hash_tags, :channel_name
+  attr_accessor :url, :user_from, :team, :user_tags, :hash_tags, :channel_name
 
-  def initialize(url:, user_from:, hash_tags:, user_tags:, channel_name:)
+  def initialize(url:, user_from:, slack_team_id:, hash_tags:, user_tags:, channel_name:)
     @url = url
     @user_from = user_from
     @hash_tags = hash_tags
     @user_tags = user_tags
     @channel_name = channel_name
+    @team = Team.find_by_team_id(slack_team_id)
   end
 
-  def self.perform(url:, user_from:, hash_tags:, user_tags:, channel_name:)
+  def self.perform(url:, user_from:, slack_team_id:, hash_tags:, user_tags:, channel_name:)
     new(url: url,
         user_from: user_from,
+        slack_team_id: slack_team_id,
         hash_tags: hash_tags,
         user_tags: user_tags,
         channel_name: channel_name).perform
@@ -41,7 +43,7 @@ class LinkCreator
   end
 
   def create_channel_tag
-    link.tags << Tag.create(name: channel_name, user: user_from, team: user_from.team)
+    link.tags << Tag.create(name: channel_name, user: user_from, team: team)
   end
 
   def add_additional_tags
@@ -53,11 +55,11 @@ class LinkCreator
   end
 
   def find_or_create_tag(name)
-    policy_scope(Tag).find_by_name(name) || Tag.create(name: name, user: user_from, team: user_from.team)
+    policy_scope(Tag).find_by_name(name) || Tag.create(name: name, user: user_from, team: team)
   end
 
   def link
-    @link ||= Link.new(url: url, user_from: user_from)
+    @link ||= Link.new(url: url, user_from: user_from, team: team)
   end
 
   def get_metadata

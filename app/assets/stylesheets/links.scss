@@ -18,20 +18,26 @@ body {
   text-align: center;
 
   .title,
-  .sign-out-button {
+  .sign-out-button,
+  .team-select-container {
     display: inline-block;
     height: inherit;
     text-align: center;
-    width: 100px;
   }
 
   .title {
-    margin-right: -100px;
+    margin-right: -20%;
   }
 
-  .sign-out-button {
+  .right-title-group {
+    .switch-user-form {
+      display: inline-block!important;
+      padding-right: 15px;
+    }
+
+    width: auto;
     float: right;
-    width: 100px;
+    padding-right: 15px;
   }
 }
 

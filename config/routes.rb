@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   resources :homepage, only: :index
   resources :sessions, only: :new
   resource :sessions, only: :destroy, as: :session
+  get 'sessions/switch_user', to: 'sessions#edit'
+  post 'sessions/update_active_user', to: 'sessions#update'
 
   #Slack API redirects
   get 'sessions/create', to: 'sessions#create'

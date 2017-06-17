@@ -4,6 +4,7 @@ class LinksController < ApplicationController
 
   def index
     @links = policy_scope(Link)
+    @user_teams = current_user.teams
   end
 
   def show

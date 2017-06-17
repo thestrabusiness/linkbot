@@ -15,6 +15,7 @@ class LinkbotServer < SlackRubyBotServer::Server
       parsed_message[:urls].each do |url|
         LinkCreator.perform(url: url,
                             user_from: user_from,
+                            slack_team_id: data.team,
                             hash_tags: parsed_message[:tags],
                             user_tags: parsed_message[:users],
                             channel_name: channel_name

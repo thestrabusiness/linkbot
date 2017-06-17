@@ -17,7 +17,7 @@ class TagPolicy
     def resolve
       scope
           .joins(:team)
-          .where(team: user.team)
+          .where(team: user.active_team)
     end
   end
 end

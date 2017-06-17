@@ -3,8 +3,8 @@ require 'rails_helper'
 feature 'User visits a link' do
   let(:user) { create(:user) }
   let(:other_team_user) { create(:user) }
-  let(:link) { create(:link, user_from: user) }
-  let(:other_team_link) { create(:link, user_from: other_team_user) }
+  let(:link) { create(:link, user_from: user, team: user.active_team) }
+  let(:other_team_link) { create(:link, user_from: other_team_user, team: other_team_user.active_team) }
 
   context 'as an authenticated user' do
     before(:each) do

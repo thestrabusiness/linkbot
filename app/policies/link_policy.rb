@@ -16,8 +16,7 @@ class LinkPolicy
 
     def resolve
       scope
-          .joins(user_from: :team)
-          .where('users.team_id': user.team.id)
+          .where(team: user.active_team)
           .includes(:metadata)
     end
   end
@@ -33,6 +32,6 @@ class LinkPolicy
   private
 
   def link_belongs_to_users_team?
-    user.team == link.team
+    user.active_team == link.team
   end
 end

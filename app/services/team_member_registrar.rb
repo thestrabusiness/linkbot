@@ -28,7 +28,7 @@ class TeamMemberRegistrar
     members_list.each_with_index do |user, index|
       user_attributes["user#{index}".to_sym] = {
           slack_id: user.id,
-          team_id: team_id,
+          active_team_id: team_id,
           first_name: user.profile.first_name,
           last_name: user.profile.last_name
       }
@@ -37,7 +37,8 @@ class TeamMemberRegistrar
 
   def create_users
     user_attributes.each do |attributes|
-      User.create(attributes.last)
+      new_user = User.create(attributes.last)
+      new_user.teams << team
     end
   end
 

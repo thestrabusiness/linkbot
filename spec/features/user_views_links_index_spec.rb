@@ -6,8 +6,8 @@ feature 'User visits the link index page' do
 
   context 'with an authenticated session' do
     it 'renders only links posted by a the user\'s team'do
-      authorized_link = create(:link, user_from: user, url: 'www.google.com')
-      unauthorized_link = create(:link, user_from: other_user, url: 'www.facebook.com')
+      authorized_link = create(:link, user_from: user, url: 'www.google.com', team: user.active_team)
+      unauthorized_link = create(:link, user_from: other_user, url: 'www.facebook.com', team: other_user.active_team)
 
       sign_in(user)
       visit links_path

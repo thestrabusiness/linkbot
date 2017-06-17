@@ -22,6 +22,18 @@ class SessionsController < ApplicationController
     end
   end
 
+  def update
+    team = Team.find(params[:team_id])
+
+    binding.pry
+
+    if current_user.update(active_team: team)
+      redirect_to links_path
+    else
+      redirect_to sessions_switch_user_path, notice: 'There was a problem switching teams!'
+    end
+  end
+
   def destroy
     if sign_out
       redirect_to root_path, notice: 'Successfully signed out!'
@@ -41,7 +53,9 @@ class SessionsController < ApplicationController
   end
 
   def create_user
-    User.create(user_params)
+    user = User.create(user_params)
+    user.teams << user_team
+    user
   end
 
   def user_attributes
@@ -54,7 +68,7 @@ class SessionsController < ApplicationController
         last_name: user_attributes['profile']['last_name'],
         email: user_attributes['email'],
         slack_id: user_attributes['id'],
-        team: user_team
+        active_team: user_team
     }
   end
 
