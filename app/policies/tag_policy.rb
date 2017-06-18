@@ -15,9 +15,7 @@ class TagPolicy
     end
 
     def resolve
-      scope
-          .joins(:team)
-          .where(team: user.active_team)
+      scope.where(team_id: user.teams.collect(&:id))
     end
   end
 end

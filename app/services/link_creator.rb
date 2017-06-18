@@ -57,7 +57,7 @@ class LinkCreator
   end
 
   def find_or_create_tag(name)
-    Pundit.policy_scope(user_from.user, Tag).find_by_name(name) || Tag.create(name: name, slack_user: user_from, team: team)
+    Pundit.policy_scope(user_from.user, Tag).where(name: name, team_id: team).first || Tag.create(name: name, slack_user: user_from, team: team)
   end
 
   def link
