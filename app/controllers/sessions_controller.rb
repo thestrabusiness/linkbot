@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
   end
 
   def link
-    get_user_auth_response(sessions_link_url)
+    get_user_auth_response(link_account_url)
 
     existing_slack_account = SlackAccount.slack_find(user_attributes['id'], user_team.id)
 
@@ -46,7 +46,7 @@ class SessionsController < ApplicationController
     if current_user.update(active_team: team)
       redirect_to links_path
     else
-      redirect_to sessions_switch_user_path, notice: 'There was a problem switching teams!'
+      redirect_to links_path, notice: 'There was a problem switching teams!'
     end
   end
 

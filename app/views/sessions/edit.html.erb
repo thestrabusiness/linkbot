@@ -1,0 +1,12 @@
+<div class='edit-session'>
+
+  <p class='sign-in-text'>
+    If you'd like to add a Slack account from another team, click the link below and select the desired team from the top right.
+  </p>
+
+  <p class='sign-in-button'>
+    <a href=<%= "https://slack.com/oauth/authorize?scope=identity.basic,identity.email,identity.team&client_id=#{ENV['SLACK_CLIENT_ID']}&redirect_uri=#{link_account_url}" %>>
+      <img alt="Sign in with Slack" height="40" width="172" src="https://platform.slack-edge.com/img/sign_in_with_slack.png" srcset="https://platform.slack-edge.com/img/sign_in_with_slack.png 1x, https://platform.slack-edge.com/img/sign_in_with_slack@2x.png 2x" />
+    </a>
+  </p>
+</div>

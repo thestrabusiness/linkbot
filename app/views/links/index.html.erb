@@ -3,10 +3,14 @@
 
   <div class='right-title-group'>
     <div class='team-select-container'>
-      <span>Active team:</span>
-      <%= form_tag sessions_update_active_user_path, class: 'switch-user-form' do %>
-        <%= select_tag('team_id', options_for_select(@user_teams.map { |team| [team.name, team.id]}) {}, {class: 'team-select'}) %>
+      <span>Select team:</span>
+      <%= form_tag update_active_team_path, class: 'switch-user-form' do %>
+        <%= select_tag('team_id', options_for_select(@user_teams.map { |team| [team.name, team.id]}, current_user.active_team.id) {}, {class: 'team-select'}) %>
       <% end %>
+    </div>
+
+    <div class='team-sign-in'>
+      <%= link_to 'Add another team', add_account_path %>
     </div>
 
     <div class='sign-out-button'><%= link_to 'Sign Out', session_path, method: :delete %></div>
