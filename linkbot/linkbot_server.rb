@@ -1,7 +1,7 @@
 class LinkbotServer < SlackRubyBotServer::Server
   on :team_join do |client, data|
     user_email = get_user_email(client.web_client, data.user)
-    SlackAccount.slack_find(data.user, find_team(data.team)) || UserCreator.perform(data.user, data.team, user_email)
+    SlackAccount.slack_find(data.user, get_team_id(data.team)) || UserCreator.perform(data.user, data.team, user_email)
   end
 
   on :message do |client, data|
@@ -42,7 +42,7 @@ class LinkbotServer < SlackRubyBotServer::Server
     client.users_identity(user: slack_user_id).user.email
   end
 
-  def self.find_team(team_id)
-    Team.find_by_team_id(team_id)
+  def self.get_team_id(team_id)
+    Team.find_by_team_id(team_id).id
   end
 end

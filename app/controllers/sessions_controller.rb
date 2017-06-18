@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   def create
     get_user_auth_response(sessions_create_url)
-    load_and_verify_user
+    load_and_verify_user if user_team.present?
 
     if user_team.nil?
       redirect_to root_path, notice: 'You must add LinkBoy to your team before signing in!'
@@ -15,26 +15,25 @@ class SessionsController < ApplicationController
   def link
     get_user_auth_response(sessions_link_url)
 
-    slack_account = SlackAccount.find_by_email(user_attributes['email'])
+    existing_slack_account = SlackAccount.slack_find(user_attributes['id'], user_team.id)
 
     if user_team.nil?
       redirect_to root_path, notice: 'You must add LinkBoy to your team before signing in with that account!'
-    elsif slack_account.present? && slack_account.user == current_user
-      current_user.update(active_team: slack_account.team)
+    elsif existing_slack_account.present? && existing_slack_account.user == current_user
+      current_user.update(active_team: existing_slack_account.team)
       redirect_to links_path, notice: 'You\'ve already linked that account, here are your links.'
-    elsif slack_account.present? && slack_account.user != current_user
-      slack_account.update(user: current_user)
-      current_user.update(active_team: slack_account.team)
+    elsif existing_slack_account.present? && existing_slack_account.user != current_user
+      existing_slack_account.update(user: current_user)
+      current_user.update(active_team: existing_slack_account.team)
       redirect_to links_path, notice: 'Account linked! Here\'s your team\'s dashboard.'
-    elsif !slack_account.present?
-      slack_account = SlackAccount.create(
-                                user: current_user,
-                                team: user_team,
-                                slack_id: user_attributes['id'],
-                                email: user_attributes['email']
+    elsif existing_slack_account.blank?
+      new_account = SlackAccount.create(
+          user: current_user,
+          team: user_team,
+          slack_id: user_attributes['id'],
+          email: user_attributes['email']
       )
-
-      current_user.update(active_team: slack_account.team)
+      current_user.update(active_team: new_account.team)
       redirect_to links_path, notice: 'Account linked! Here\'s your team\'s dashboard.'
     else
       redirect_to links_path, notice: 'There was a problem signing in with your account.'
@@ -62,7 +61,11 @@ class SessionsController < ApplicationController
   private
 
   def load_and_verify_user
-    @user = SlackAccount.slack_find(user_attributes['id'], user_team.id).user
+    @user = SlackAccountUserQuerier.perform(
+        email: user_attributes['email'],
+        slack_user_id: user_attributes['id'],
+        slack_team_id: user_attributes['team_id']
+    )
   end
 
   def get_user_auth_response(redirect_uri)
