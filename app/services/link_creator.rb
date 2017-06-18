@@ -44,7 +44,7 @@ class LinkCreator
   end
 
   def create_channel_tag
-    link.tags << Tag.create(name: channel_name, slack_user: user_from, team: team)
+    link.tags << find_or_create_tag(channel_name)
   end
 
   def add_additional_tags
