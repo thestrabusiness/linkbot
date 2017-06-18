@@ -1,5 +1,6 @@
 class LinkCreator
   include ErrorCollection
+  include Pundit
   attr_accessor :url, :user_from, :team, :user_tags, :hash_tags, :channel_name
 
   def initialize(url:, user_from:, slack_team_id:, hash_tags:, user_tags:, channel_name:)
@@ -56,7 +57,7 @@ class LinkCreator
   end
 
   def find_or_create_tag(name)
-    policy_scope(Tag).find_by_name(name) || Tag.create(name: name, slack_user: user_from, team: team)
+    Pundit.policy_scope(user_from.user, Tag).find_by_name(name) || Tag.create(name: name, slack_user: user_from, team: team)
   end
 
   def link
