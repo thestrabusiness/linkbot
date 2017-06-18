@@ -6,10 +6,17 @@ class TeamRegistrar
   end
 
   def perform
-    authorize_client
-    validate_or_create_team
-    start_server_instance
-    register_team_members
+    begin
+      ActiveRecord::Base.transaction do
+        authorize_client
+        validate_or_create_team
+        register_team_members
+      end
+    rescue ActiveRecord::Rollback
+      raise Slack::Web::Api::Error, 'Something went wrong while registering your team. Please try again or contact support for help.'
+    else
+      start_server_instance
+    end
   end
 
   def self.perform(code, current_user)

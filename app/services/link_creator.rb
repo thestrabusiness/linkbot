@@ -85,5 +85,8 @@ class LinkCreator
         link.collect_errors_from metadata
       end
     end
+
+  rescue MetaInspector::Error, MetaInspector::TimeoutError, MetaInspector::RequestError, MetaInspector::ParserError => e
+    logger.error "There was a problem obtaining Metadata for the link: #{e}"
   end
 end
