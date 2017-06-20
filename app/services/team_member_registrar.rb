@@ -37,19 +37,28 @@ class TeamMemberRegistrar
   end
 
   def create_users
-    user_attributes.each do |attributes|
-      user_attributes = attributes.last.except(:slack_id, :email)
-      user_slack_id = attributes.last[:slack_id]
-      user_email = attributes.last[:email]
+    ActiveRecord::Base.transaction do
+      user_attributes.each do |attributes|
 
-      new_user = User.create(user_attributes)
-      SlackAccount.create(
-          slack_id: user_slack_id,
-          email: user_email,
-          user: new_user,
-          team: team
-      )
+        user_attributes = attributes.last.except(:slack_id, :email)
+        user_slack_id = attributes.last[:slack_id]
+        user_email = attributes.last[:email]
+
+        new_user = User.create(user_attributes)
+
+        SlackAccount.create(
+            slack_id: user_slack_id,
+            email: user_email,
+            user: new_user,
+            team: team
+        )
+      end
     end
+
+  true
+
+  rescue ActiveRecord::Rollback
+    false
   end
 
   def team

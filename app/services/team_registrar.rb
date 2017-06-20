@@ -10,7 +10,11 @@ class TeamRegistrar
       ActiveRecord::Base.transaction do
         authorize_client
         validate_or_create_team
-        register_team_members
+        success = register_team_members
+
+        unless success
+          raise ActiveRecord::Rollback
+        end
       end
     rescue ActiveRecord::Rollback
       raise Slack::Web::Api::Error, 'Something went wrong while registering your team. Please try again or contact support for help.'
