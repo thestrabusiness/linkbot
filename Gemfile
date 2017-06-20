@@ -40,6 +40,7 @@ end
 group :development, :test do
   gem 'pry'
   gem 'binding_of_caller'
+  gem 'railroady'
 end
 
 group :test do
