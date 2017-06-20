@@ -7,7 +7,7 @@ class LinkbotServer < SlackRubyBotServer::Server
   on :message do |client, data|
     if data.text.present? && MessageParser.links_present?(data.text)
       channel_name = get_channel_name(client.web_client, data.channel)
-      user_from = SlackAccount.slack_find(data.user, find_team(data.team))
+      user_from = SlackAccount.slack_find(data.user, get_team_id(data.team))
 
       parsed_message = MessageParser.perform(data.text)
 
