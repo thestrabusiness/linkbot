@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/celluloid/celluloid
+  revision: f668bb71047212f9feed854ab7288a07a44b2691
+  submodules: true
+  specs:
+    celluloid (0.18.0.pre)
+      celluloid-pool (~> 0.20)
+      celluloid-supervision (~> 0.20)
+      timers (~> 4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -78,19 +88,6 @@ GEM
     capybara-webkit (1.14.0)
       capybara (>= 2.3.0, < 2.14.0)
       json
-    celluloid (0.17.3)
-      celluloid-essentials
-      celluloid-extras
-      celluloid-fsm
-      celluloid-pool
-      celluloid-supervision
-      timers (>= 4.1.1)
-    celluloid-essentials (0.20.5)
-      timers (>= 4.1.1)
-    celluloid-extras (0.20.5)
-      timers (>= 4.1.1)
-    celluloid-fsm (0.20.5)
-      timers (>= 4.1.1)
     celluloid-io (0.17.3)
       celluloid (>= 0.17.2)
       nio4r (>= 1.1)
@@ -163,10 +160,10 @@ GEM
     hashie (3.5.5)
     hashie-forbidden_attributes (0.1.1)
       hashie (>= 3.0)
-    hitimes (1.2.4)
+    hitimes (1.2.5)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (0.8.1)
+    i18n (0.8.4)
     ice_nine (0.11.2)
     inline_svg (1.2.1)
       activesupport (>= 3.0)
@@ -393,7 +390,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap-sass
   capybara-webkit
-  celluloid-io
+  celluloid!
   database_cleaner
   dotenv-rails
   factory_girl_rails

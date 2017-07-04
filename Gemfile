@@ -10,7 +10,7 @@ ruby '2.4.1'
 gem 'awesome_print'
 gem 'aws-sdk'
 gem 'bootstrap-sass'
-gem 'celluloid-io'
+gem 'celluloid', git: 'https://github.com/celluloid/celluloid', submodules: true
 gem 'dotenv-rails'
 gem 'inline_svg'
 gem 'jbuilder', '~> 2.5'
