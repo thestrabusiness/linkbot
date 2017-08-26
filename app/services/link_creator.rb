@@ -36,8 +36,9 @@ class LinkCreator
     create_channel_tag
     add_additional_tags if hash_tags.present?
 
+    link
   rescue ActiveRecord::Rollback
-    logger.error "There was a problem creating the link #{link.errors.inspect}"
+    Rails.logger.error "There was a problem creating the link: #{link.errors.full_messages.join(', ')}"
   end
 
   def tag_users
@@ -45,19 +46,26 @@ class LinkCreator
   end
 
   def create_channel_tag
-    link.tags << find_or_create_tag(channel_name)
+    channel_tag = find_or_create_tag(channel_name)
+    if channel_tag.valid?
+      link.tags << channel_tag
+    else
+      Rails.logger.error "Channel tag couldn't be created: #{channel_tag.errors.full_messages.join(', ')}"
+    end
   end
 
   def add_additional_tags
-    @additional_tags = hash_tags
-                           .map { |tag|  find_or_create_tag(tag) }
-                           .reject{ |tag| tag.class != Tag || !tag.valid? }
+    tags = hash_tags.map { |tag|  find_or_create_tag(tag) }
 
-    link.tags << @additional_tags
+    @valid_tags = tags.reject { |tag| tag.class != Tag || !tag.valid? }
+    link.tags << @valid_tags
+
+    @invalid_tags = tags.reject { |tag| tag.class != Tag || tag.valid? }
+    @invalid_tags.each { |tag| Rails.logger.error "Tag couldn't be created: #{tag.errors.full_messages.join(', ')}"}
   end
 
   def find_or_create_tag(name)
-    Pundit.policy_scope(user_from.user, Tag).where(name: name, team_id: team).first || Tag.create(name: name, slack_user: user_from, team: team)
+    Pundit.policy_scope(user_from.user, Tag).where(name: name, team_id: team).first || Tag.create(name: name, slack_account: user_from, team: team)
   end
 
   def link
@@ -88,6 +96,6 @@ class LinkCreator
     end
 
   rescue MetaInspector::Error, MetaInspector::TimeoutError, MetaInspector::RequestError, MetaInspector::ParserError => e
-    logger.error "There was a problem obtaining Metadata for the link: #{e}"
+    Rails.logger.error "There was a problem obtaining Metadata for the link: #{e}"
   end
 end

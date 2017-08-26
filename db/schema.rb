@@ -64,10 +64,10 @@ ActiveRecord::Schema.define(version: 20170617214749) do
   create_table "tags", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "name"
     t.uuid     "team_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.uuid     "slack_user_id"
-    t.index ["slack_user_id"], name: "index_tags_on_slack_user_id", using: :btree
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.uuid     "slack_account_id"
+    t.index ["slack_account_id"], name: "index_tags_on_slack_account_id", using: :btree
     t.index ["team_id"], name: "index_tags_on_team_id", using: :btree
   end
 
@@ -89,13 +89,12 @@ ActiveRecord::Schema.define(version: 20170617214749) do
   end
 
   create_table "user_tags", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "user_id"
     t.uuid     "link_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.uuid     "slack_account_id"
     t.index ["link_id"], name: "index_user_tags_on_link_id", using: :btree
-    t.index ["user_id", "link_id"], name: "index_user_tags_on_user_id_and_link_id", using: :btree
-    t.index ["user_id"], name: "index_user_tags_on_user_id", using: :btree
+    t.index ["slack_account_id"], name: "index_user_tags_on_slack_account_id", using: :btree
   end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
