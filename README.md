@@ -1,9 +1,9 @@
-# Linkbot
+# Linkboy
 
-This repo contains the Linkbot server and it's associated web portal. Linkbot is a slackbot that watches your channels for
+This repo contains the Linkboy server and its associated web portal. Linkboy is a slackbot that watches your channels for
 links that you post or send to your team members, collects and organizes them for you.
 
-**To run Linkbot:**
+**To run Linkboy:**
 
 * Clone the repo && `bundle install` && `rake db:create db:migrate`
 * Configure a new application with a bot user on the Slack API (note your client id/tokens)
