@@ -102,7 +102,7 @@ GEM
     coderay (1.1.1)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
-    concurrent-ruby (1.0.5)
+    concurrent-ruby (1.1.4)
     database_cleaner (1.6.1)
     debug_inspector (0.0.3)
     declarative (0.0.9)
@@ -239,7 +239,7 @@ GEM
     puma (3.8.2)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
-    rack (2.0.3)
+    rack (2.0.6)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-cors (0.4.1)
@@ -336,7 +336,7 @@ GEM
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
-    sprockets (3.7.1)
+    sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.2.0)
@@ -414,6 +414,7 @@ DEPENDENCIES
   slack-ruby-bot-server
   spring
   spring-watcher-listen (~> 2.0.0)
+  sprockets (= 3.7.2)
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)
