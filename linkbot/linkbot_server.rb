@@ -21,10 +21,12 @@ class LinkbotServer < SlackRubyBotServer::Server
         )
       end
 
-      client.say(
-          channel: data.channel,
-          text: "Link".pluralize(parsed_message[:urls].count) + " saved to db"
-      )
+      if Rails.env.development?
+        client.say(
+            channel: data.channel,
+            text: "Link".pluralize(parsed_message[:urls].count) + " saved to db"
+        )
+      end
     end
   end
 
