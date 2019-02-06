@@ -24,5 +24,5 @@ Rails.application.configure do
   config.assets.quiet = true
 
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-  config.logger = Logger.new(STDOUT)
+  config.logger = ActiveSupport::Logger.new(STDOUT)
 end
